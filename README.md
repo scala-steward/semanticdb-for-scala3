@@ -21,3 +21,7 @@ $ sbt
 > generate
 ```
 
+### Updating the .proto to match a certain Scalameta version
+
+- Update the `scalametaVersion` variable in `build.sbt`, or the `semanticdbProtoURL`.
+- Run `sbt generate`, to re-fetch and patch the local .proto file.
