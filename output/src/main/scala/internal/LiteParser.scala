@@ -1,6 +1,5 @@
 package dotty.tools.dotc.semanticdb.internal
 
-import java.io.InputStream
 
 object LiteParser {
 
@@ -34,5 +33,4 @@ object LiteParser {
   @inline
   def preferredSemanticdbOutputStreamBufferSize(dataLength: Int) =
     dataLength min SemanticdbOutputStream.DEFAULT_BUFFER_SIZE
-
 }
