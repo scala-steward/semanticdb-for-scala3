@@ -404,6 +404,7 @@ message Tree {
 message ApplyTree {
   Tree function = 1;
   repeated Tree arguments = 2;
+  int32 properties = 3; // bitmask of SymbolInformation.Property
 }
 
 message FunctionTree {
