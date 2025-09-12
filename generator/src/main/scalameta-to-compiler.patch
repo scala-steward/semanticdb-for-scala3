@@ -1,0 +1,18 @@
+--- ../scalameta/semanticdb/semanticdb/shared/src/main/proto/semanticdb.proto	2025-09-01 13:27:15.488562021 +0200
++++ generator/src/main/protobuf/scalameta.proto	2025-09-01 13:45:57.842972500 +0200
+@@ -1,11 +1,13 @@
+ syntax = "proto3";
+ 
+-package scala.meta.internal.semanticdb;
++package dotty.tools.dotc.semanticdb;
+ 
+ import "scalapb/scalapb.proto";
+ 
+ option (scalapb.options) = {
+   preserve_unknown_fields: false
++  import: "dotty.tools.dotc.semanticdb.internal._"
++  import: "scala.annotation.internal.sharable"
+ };
+ 
+ enum Schema {
+

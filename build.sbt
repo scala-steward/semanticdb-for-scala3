@@ -1,22 +1,50 @@
 ThisBuild / scalafixScalaBinaryVersion :=
   CrossVersion.binaryScalaVersion(scalaVersion.value)
 
+val scalametaVersion = "4.13.9"
+val semanticdbProtoURL =
+  "https://raw.githubusercontent.com/scalameta/scalameta/refs/tags/v%s/semanticdb/semanticdb/shared/src/main/proto/semanticdb.proto"
+    .format(scalametaVersion)
+
 ThisBuild / scalaVersion := "2.13.16"
 
 commands += Command.command("ci") { s =>
-  s"clean" ::
+  s"check-protobuf" ::
+    s"clean" ::
     s"clean-generated" ::
     s"generate" ::
     s
 }
 
 commands += Command.command("generate") { s =>
-  s"generator/protocGenerate" ::
+  s"fetch-protobuf" ::
+    s"generator/protocGenerate" ::
     s"output/scalafix AdjustForScala3" ::
     s"remove-scalameta-proto" ::
     s"output/compile" ::
     s
 }
+
+commands += Command.command("check-protobuf") { s =>
+  import scala.sys.process._
+  val generatorDir = (generator / Compile / baseDirectory).value
+  assert(
+    (("%s/src/main/fetch-proto.sh %s %s %s")
+      .format(generatorDir, semanticdbProtoURL, generatorDir, "true") !) == 0
+  );
+  s
+}
+
+commands += Command.command("fetch-protobuf") { s =>
+  import scala.sys.process._
+  val generatorDir = (generator / Compile / baseDirectory).value
+  assert(
+    (("%s/src/main/fetch-proto.sh %s %s %s")
+      .format(generatorDir, semanticdbProtoURL, generatorDir, "false") !) == 0
+  );
+  s
+}
+
 commands += Command.command("clean-generated") { s =>
   IO.delete(
     (output / Compile / baseDirectory).value / "src" / "main" / "scala" / "generated"
